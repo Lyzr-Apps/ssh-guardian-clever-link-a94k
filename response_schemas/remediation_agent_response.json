@@ -1,0 +1,60 @@
+{
+  "agent_name": "Remediation Agent",
+  "agent_id": "69a27b7800b22915dd81e14f",
+  "description": "SSHs into the target machine, presents each proposed config change or command for explicit user approval before execution. Halts automatically before any destructive operation (rm -rf, file deletion, config overwrite) and requires confirmation. Applies approved JSON config changes, executes approved commands, restarts the Motadata service, and reports results.",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "actions_taken": [
+      {
+        "step_number": "number",
+        "action_description": "string",
+        "command_executed": "string",
+        "status": "string",
+        "output": "string",
+        "is_destructive": "boolean",
+        "backup_path": "string"
+      }
+    ],
+    "skipped_actions": [
+      {
+        "step_number": "number",
+        "action_description": "string",
+        "reason": "string"
+      }
+    ],
+    "service_restart": {
+      "status": "string",
+      "output": "string",
+      "timestamp": "string"
+    },
+    "summary": "string"
+  },
+  "example_response": {
+    "actions_taken": [
+      {
+        "step_number": 0,
+        "action_description": "sample string",
+        "command_executed": "sample string",
+        "status": "sample string",
+        "output": "sample string",
+        "is_destructive": false,
+        "backup_path": "sample string"
+      }
+    ],
+    "skipped_actions": [
+      {
+        "step_number": 0,
+        "action_description": "sample string",
+        "reason": "sample string"
+      }
+    ],
+    "service_restart": {
+      "status": "sample string",
+      "output": "sample string",
+      "timestamp": "sample string"
+    },
+    "summary": "sample string"
+  }
+}

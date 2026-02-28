@@ -1,0 +1,54 @@
+{
+  "agent_name": "Health Monitor Agent",
+  "agent_id": "69a27b798e6d0e51fd5cd395",
+  "description": "SSHs into the target machine and continuously monitors Motadata service health by checking that all designated workers (motadata app, datastore, bootstrap) are running. Streams live status updates showing worker states, uptime, and any anomalies. Alerts if any worker goes down after restart.",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "workers": [
+      {
+        "worker_name": "string",
+        "status": "string",
+        "uptime": "string",
+        "pid": "string",
+        "memory_usage": "string",
+        "anomalies": "string"
+      }
+    ],
+    "alerts": [
+      {
+        "worker_name": "string",
+        "alert_type": "string",
+        "message": "string",
+        "suggested_action": "string"
+      }
+    ],
+    "overall_health": "string",
+    "timestamp": "string",
+    "summary": "string"
+  },
+  "example_response": {
+    "workers": [
+      {
+        "worker_name": "sample string",
+        "status": "sample string",
+        "uptime": "sample string",
+        "pid": "sample string",
+        "memory_usage": "sample string",
+        "anomalies": "sample string"
+      }
+    ],
+    "alerts": [
+      {
+        "worker_name": "sample string",
+        "alert_type": "sample string",
+        "message": "sample string",
+        "suggested_action": "sample string"
+      }
+    ],
+    "overall_health": "sample string",
+    "timestamp": "sample string",
+    "summary": "sample string"
+  }
+}

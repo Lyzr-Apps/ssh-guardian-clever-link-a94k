@@ -1,0 +1,16 @@
+{
+  "agents": {
+    "diagnosis_agent": {
+      "agent_id": "69a27b78e558069e826f040c",
+      "name": "Diagnosis Agent"
+    },
+    "remediation_agent": {
+      "agent_id": "69a27b7800b22915dd81e14f",
+      "name": "Remediation Agent"
+    },
+    "health_monitor_agent": {
+      "agent_id": "69a27b798e6d0e51fd5cd395",
+      "name": "Health Monitor Agent"
+    }
+  }
+}

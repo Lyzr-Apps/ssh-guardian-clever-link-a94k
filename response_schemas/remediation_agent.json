@@ -1,0 +1,33 @@
+{
+  "agent_name": "Remediation Agent",
+  "agent_id": "69a27b7800b22915dd81e14f",
+  "agent_type": "json",
+  "accessor": "json",
+  "has_module_outputs": false,
+  "response_schema": {
+    "actions_taken": [
+      {
+        "step_number": "number",
+        "action_description": "string",
+        "command_executed": "string",
+        "status": "string",
+        "output": "string",
+        "is_destructive": "boolean",
+        "backup_path": "string"
+      }
+    ],
+    "skipped_actions": [
+      {
+        "step_number": "number",
+        "action_description": "string",
+        "reason": "string"
+      }
+    ],
+    "service_restart": {
+      "status": "string",
+      "output": "string",
+      "timestamp": "string"
+    },
+    "summary": "string"
+  }
+}

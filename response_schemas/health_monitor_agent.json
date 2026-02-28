@@ -1,0 +1,30 @@
+{
+  "agent_name": "Health Monitor Agent",
+  "agent_id": "69a27b798e6d0e51fd5cd395",
+  "agent_type": "json",
+  "accessor": "json",
+  "has_module_outputs": false,
+  "response_schema": {
+    "workers": [
+      {
+        "worker_name": "string",
+        "status": "string",
+        "uptime": "string",
+        "pid": "string",
+        "memory_usage": "string",
+        "anomalies": "string"
+      }
+    ],
+    "alerts": [
+      {
+        "worker_name": "string",
+        "alert_type": "string",
+        "message": "string",
+        "suggested_action": "string"
+      }
+    ],
+    "overall_health": "string",
+    "timestamp": "string",
+    "summary": "string"
+  }
+}

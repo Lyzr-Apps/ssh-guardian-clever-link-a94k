@@ -1,0 +1,42 @@
+{
+  "nodes": [
+    {
+      "id": "input_node",
+      "type": "Input",
+      "label": "Machine Details",
+      "nodeCategory": "input"
+    },
+    {
+      "id": "diagnosis_agent",
+      "type": "Agent",
+      "label": "Diagnosis Agent",
+      "nodeCategory": "agent"
+    },
+    {
+      "id": "remediation_agent",
+      "type": "Agent",
+      "label": "Remediation Agent",
+      "nodeCategory": "agent"
+    },
+    {
+      "id": "health_monitor_agent",
+      "type": "Agent",
+      "label": "Health Monitor Agent",
+      "nodeCategory": "agent"
+    }
+  ],
+  "edges": [
+    {
+      "source": "input_node",
+      "target": "diagnosis_agent"
+    },
+    {
+      "source": "diagnosis_agent",
+      "target": "remediation_agent"
+    },
+    {
+      "source": "remediation_agent",
+      "target": "health_monitor_agent"
+    }
+  ]
+}

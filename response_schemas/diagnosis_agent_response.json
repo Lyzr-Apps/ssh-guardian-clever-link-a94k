@@ -1,0 +1,96 @@
+{
+  "agent_name": "Diagnosis Agent",
+  "agent_id": "69a27b78e558069e826f040c",
+  "description": "SSHs into the target machine via VPN, checks Motadata service status, reads and analyzes log files from /motadata/motadata/logs, inspects JSON config files at /motadata/motadata/config, identifies issues (service crashes, config errors, port conflicts), and generates a structured diagnostic report with root cause analysis and recommended fixes.",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "service_status": {
+      "service_name": "string",
+      "status": "string",
+      "uptime": "string",
+      "details": "string"
+    },
+    "log_analysis": [
+      {
+        "severity": "string",
+        "timestamp": "string",
+        "message": "string",
+        "source_file": "string",
+        "stack_trace": "string"
+      }
+    ],
+    "config_issues": [
+      {
+        "file_path": "string",
+        "issue": "string",
+        "current_value": "string",
+        "suggested_value": "string",
+        "severity": "string"
+      }
+    ],
+    "worker_health": [
+      {
+        "worker_name": "string",
+        "status": "string",
+        "uptime": "string",
+        "details": "string"
+      }
+    ],
+    "recommended_fixes": [
+      {
+        "fix_number": "number",
+        "description": "string",
+        "command": "string",
+        "is_destructive": "boolean",
+        "severity": "string"
+      }
+    ],
+    "summary": "string"
+  },
+  "example_response": {
+    "service_status": {
+      "service_name": "sample string",
+      "status": "sample string",
+      "uptime": "sample string",
+      "details": "sample string"
+    },
+    "log_analysis": [
+      {
+        "severity": "sample string",
+        "timestamp": "sample string",
+        "message": "sample string",
+        "source_file": "sample string",
+        "stack_trace": "sample string"
+      }
+    ],
+    "config_issues": [
+      {
+        "file_path": "sample string",
+        "issue": "sample string",
+        "current_value": "sample string",
+        "suggested_value": "sample string",
+        "severity": "sample string"
+      }
+    ],
+    "worker_health": [
+      {
+        "worker_name": "sample string",
+        "status": "sample string",
+        "uptime": "sample string",
+        "details": "sample string"
+      }
+    ],
+    "recommended_fixes": [
+      {
+        "fix_number": 0,
+        "description": "sample string",
+        "command": "sample string",
+        "is_destructive": false,
+        "severity": "sample string"
+      }
+    ],
+    "summary": "sample string"
+  }
+}
