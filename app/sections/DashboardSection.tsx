@@ -101,7 +101,7 @@ export default function DashboardSection({
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-xl font-bold text-[hsl(120,100%,50%)] tracking-wider uppercase">System Diagnostics</h1>
-              <p className="text-[hsl(120,60%,35%)] text-xs mt-1 tracking-wider">SSH into target machine and run: service motadata status</p>
+              <p className="text-[hsl(120,60%,35%)] text-xs mt-1 tracking-wider">Connect to a target machine to begin troubleshooting</p>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-xs text-[hsl(120,60%,35%)] tracking-wider">Sample Data</span>

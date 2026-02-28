@@ -5,11 +5,47 @@
   "accessor": "json",
   "has_module_outputs": false,
   "response_schema": {
-    "command": "string",
-    "terminal_output": "string",
-    "exit_code": "string",
-    "status": "string",
-    "machine_ip": "string",
-    "timestamp": "string"
+    "service_status": {
+      "service_name": "string",
+      "status": "string",
+      "uptime": "string",
+      "details": "string"
+    },
+    "log_analysis": [
+      {
+        "severity": "string",
+        "timestamp": "string",
+        "message": "string",
+        "source_file": "string",
+        "stack_trace": "string"
+      }
+    ],
+    "config_issues": [
+      {
+        "file_path": "string",
+        "issue": "string",
+        "current_value": "string",
+        "suggested_value": "string",
+        "severity": "string"
+      }
+    ],
+    "worker_health": [
+      {
+        "worker_name": "string",
+        "status": "string",
+        "uptime": "string",
+        "details": "string"
+      }
+    ],
+    "recommended_fixes": [
+      {
+        "fix_number": "number",
+        "description": "string",
+        "command": "string",
+        "is_destructive": "boolean",
+        "severity": "string"
+      }
+    ],
+    "summary": "string"
   }
 }
