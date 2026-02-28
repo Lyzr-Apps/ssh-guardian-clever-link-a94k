@@ -56,29 +56,30 @@ const SAMPLE_DIAGNOSIS = {
   response: {
     status: 'success' as const,
     result: {
-      service_status: { service_name: 'motadata', status: 'Degraded', uptime: '3d 12h 45m', details: 'Service running with reduced capacity. 1 of 3 workers reporting errors.' },
-      log_analysis: [
-        { severity: 'ERROR', timestamp: '2024-01-15 14:32:01', message: 'OutOfMemoryError in datastore worker - heap space exhausted', source_file: '/motadata/motadata/logs/datastore.log', stack_trace: 'java.lang.OutOfMemoryError: Java heap space\n  at com.motadata.core.DataProcessor.process(DataProcessor.java:142)\n  at com.motadata.core.Worker.run(Worker.java:89)' },
-        { severity: 'WARN', timestamp: '2024-01-15 14:30:55', message: 'Connection pool nearing max capacity (48/50 active)', source_file: '/motadata/motadata/logs/app.log', stack_trace: '' },
-        { severity: 'ERROR', timestamp: '2024-01-15 14:28:12', message: 'Failed to write metrics to disk - permission denied on /motadata/data/metrics', source_file: '/motadata/motadata/logs/bootstrap.log', stack_trace: 'java.io.IOException: Permission denied\n  at java.io.FileOutputStream.open(FileOutputStream.java:270)' },
-        { severity: 'INFO', timestamp: '2024-01-15 14:25:00', message: 'Scheduled backup completed successfully', source_file: '/motadata/motadata/logs/app.log', stack_trace: '' },
-      ],
-      config_issues: [
-        { file_path: '/motadata/motadata/config/datastore.json', issue: 'Heap size too low for current data volume', current_value: '-Xmx512m', suggested_value: '-Xmx2048m', severity: 'high' },
-        { file_path: '/motadata/motadata/config/app.json', issue: 'Connection pool max too low', current_value: '"max_connections": 50', suggested_value: '"max_connections": 200', severity: 'medium' },
-      ],
-      worker_health: [
-        { worker_name: 'motadata app', status: 'Running', uptime: '3d 12h', details: 'Connection pool near capacity' },
-        { worker_name: 'datastore', status: 'Down', uptime: '0m (crashed)', details: 'OOM killed 2 minutes ago' },
-        { worker_name: 'bootstrap', status: 'Running', uptime: '3d 12h', details: 'Metrics write permission error' },
-      ],
-      recommended_fixes: [
-        { fix_number: 1, description: 'Increase datastore heap size from 512m to 2048m', command: "sed -i 's/-Xmx512m/-Xmx2048m/g' /motadata/motadata/config/datastore.json", is_destructive: false, severity: 'high' },
-        { fix_number: 2, description: 'Increase connection pool max from 50 to 200', command: "sed -i 's/\"max_connections\": 50/\"max_connections\": 200/g' /motadata/motadata/config/app.json", is_destructive: false, severity: 'medium' },
-        { fix_number: 3, description: 'Fix permissions on metrics directory', command: 'chown -R motadata:motadata /motadata/data/metrics && chmod 755 /motadata/data/metrics', is_destructive: false, severity: 'high' },
-        { fix_number: 4, description: 'Clear stale lock files and restart datastore', command: 'rm -f /motadata/data/datastore/*.lock && systemctl restart motadata-datastore', is_destructive: true, severity: 'high' },
-      ],
-      summary: '## Diagnosis Complete\n\nThe Motadata service is running in a **degraded state**. The datastore worker has crashed due to an OutOfMemoryError.\n\n### Root Causes:\n- Insufficient heap memory allocated to datastore (512MB vs recommended 2GB)\n- File permission mismatch on /motadata/data/metrics directory\n- Connection pool configuration too conservative for current load\n\n### Recommended: Apply fixes #1, #2, #3 immediately. Fix #4 requires confirmation (destructive).',
+      command: 'service motadata status',
+      terminal_output: `motadata.service - Motadata Network Monitoring Platform
+   Loaded: loaded (/etc/systemd/system/motadata.service; enabled; vendor preset: enabled)
+   Active: active (running) since Mon 2024-01-15 02:14:33 UTC; 3 days ago
+  Process: 1234 ExecStart=/motadata/bin/start.sh (code=exited, status=0/SUCCESS)
+ Main PID: 1456 (java)
+    Tasks: 187 (limit: 4915)
+   Memory: 2.1G
+      CPU: 45min 23.456s
+   CGroup: /system.slice/motadata.service
+           ├─1456 /usr/bin/java -Xmx2048m -jar /motadata/motadata/app.jar
+           ├─1523 /motadata/datastore/bin/datastore --port 5432
+           └─1589 /motadata/bootstrap/bin/bootstrap --config /motadata/motadata/config/bootstrap.json
+
+Jan 15 02:14:33 motadata-server systemd[1]: Starting Motadata Network Monitoring Platform...
+Jan 15 02:14:33 motadata-server start.sh[1234]: Initializing motadata services...
+Jan 15 02:14:35 motadata-server start.sh[1234]: Datastore started on port 5432
+Jan 15 02:14:36 motadata-server start.sh[1234]: Bootstrap service initialized
+Jan 15 02:14:38 motadata-server start.sh[1234]: Motadata app started successfully
+Jan 15 02:14:38 motadata-server systemd[1]: Started Motadata Network Monitoring Platform.`,
+      exit_code: '0',
+      status: 'success',
+      machine_ip: '192.168.1.100',
+      timestamp: '2024-01-15 14:35:00',
     },
     message: '',
   },
@@ -229,8 +230,6 @@ export default function Page() {
       setDiagnosisResult(null)
       setRemediationResult(null)
       setHealthData(null)
-      setSelectedFixes([])
-      setEditedCommands({})
       setHealthLogs([])
       setConnectionDetails({ ip: '', username: '', password: '' })
       try {
@@ -256,7 +255,7 @@ export default function Page() {
     setErrorMsg(null)
     setActiveAgentId(DIAGNOSIS_AGENT_ID)
     try {
-      const message = `Diagnose Motadata service on machine ${connectionDetails.ip}. SSH credentials: username=${connectionDetails.username}. Check service status, analyze logs at /motadata/motadata/logs, inspect configs at /motadata/motadata/config, check worker health for motadata app, datastore, and bootstrap.`
+      const message = `SSH into machine ${connectionDetails.ip} with username=${connectionDetails.username} and run the command: service motadata status. Return the exact raw terminal output.`
       const result = await callAIAgent(message, DIAGNOSIS_AGENT_ID)
       if (result.success) {
         setDiagnosisResult(result)
@@ -392,15 +391,11 @@ export default function Page() {
         {currentScreen === 'diagnosis' && (
           <DiagnosisSection
             diagnosisResult={diagnosisResult}
-            selectedFixes={selectedFixes}
-            setSelectedFixes={setSelectedFixes}
-            editedCommands={editedCommands}
-            setEditedCommands={setEditedCommands}
             loading={loading}
-            onApplyFixes={handleApplyFixes}
             onRerunDiagnosis={handleRunDiagnosis}
             onNavigate={navigate}
             activeAgentId={activeAgentId}
+            connectionDetails={connectionDetails}
           />
         )}
 
